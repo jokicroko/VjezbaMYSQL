@@ -1,0 +1,101 @@
+CREATE TABLE firma.zaposlenici (
+    ID_radnika INT NOT NULL AUTO_INCREMENT,
+    ime VARCHAR(50) NULL,
+    prezime VARCHAR(50) NULL,
+    Postanski_broj INT NULL,
+    Placa DECIMAL(9,2) NULL,
+    Radno_mjesto VARCHAR(50) NULL,
+    PRIMARY KEY (ID_radnika)
+);
+
+CREATE TABLE firma.mjesto_rada_radnika(
+ID_radnika INT DEFAULT NULL,
+ID_odjela INT DEFAULT NULL
+);
+
+CREATE TABLE firma.odjel(
+ID_odjela INT NOT NULL AUTO_INCREMENT,
+naziv_odjela VARCHAR(50) NULL,
+PRIMARY KEY(ID_odjela)
+);
+
+ALTER TABLE firma.odjel
+ADD ID_voditelja INT NULL;
+
+CREATE TABLE firma.radno_mjesto(
+ID_radnog_mjesta INT NOT NULL AUTO_INCREMENT,
+Naziv_pozicije VARCHAR(50) NULL,
+PRIMARY KEY (ID_radnog_mjesta)
+);
+
+
+INSERT INTO firma.zaposlenici(ime,prezime,Postanski_broj,Placa,Radno_mjesto)
+VALUES 
+('Mario','Matić','21000','800','Split'),
+('Ivan','Matas','10000','843','Zagreb'),
+('Ivana','Kovač','22000','1030','Šibenik'),
+('Lorena','Marenzi','14145','1300','Sinj'),
+('Ante','Cash','13564','1800','Zadar'),
+('Luka','Knežević','22130','2000','Boraja'),
+('Natalia','Občević','10000','2600','Zagreb'),
+('Ivica','Mihaljević','21000','1990','Split'),
+('Josip','Petrovič','22134','1100','Dubrava'),
+('Marija','Ljaljić','22156','2100','Drniš');
+
+INSERT INTO firma.odjel(ID_odjela,naziv_odjela)
+VALUES
+('1','Front-end'),
+('2','Back-end'),
+('3','PR');
+
+
+INSERT INTO firma.odjel(ID_voditelja)
+VALUES 
+('9'),('8');
+
+INSERT INTO firma.mjesto_rada_radnika(ID_radnika,ID_odjela)
+VALUES
+('1','1'),
+('2','2'),
+('3','1'),
+('4','3'),
+('5','3'),
+('6','2'),
+('7','2'),
+('8','1'),
+('9','2'),
+('10','1');
+
+INSERT INTO firma.radno_mjesto(Naziv_pozicije)
+VALUES 
+('Junior Front-DEV'),
+('Junior Back-DEV'),
+('Mid Front-DEV'),
+('Junior Front-DEV'),
+('PR'),
+('Junior Back-DEV'),
+('Mid Back-DEV'),
+('Senior Front-DEV'),
+('Senior Back-DEV'),
+('PR');
+
+SELECT ime,prezime,placa FROM zaposlenici;
+
+
+SELECT AVG(zaposlenici.placa) FROM zaposlenici
+INNER JOIN odjel ON odjel.ID_voditelja = ID_radnika;
+
+DELIMITER //
+
+CREATE PROCEDURE ProsjekPlaca()
+BEGIN
+	SELECT AVG(Placa) FROM zaposlenici;
+END //
+
+DELIMITER ;
+
+CALL ProsjekPlaca();
+
+
+
+
